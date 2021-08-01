@@ -4,6 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <CodeAnalysisRuleSet>..\.sonarlint\dos1986_ectrackercsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\dos1986_ectracker\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
 
 </Project>
