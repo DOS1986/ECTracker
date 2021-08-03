@@ -1,4 +1,5 @@
 ﻿using ECTracker.DAL.DataAccess;
+using ECTracker.DAL.DataAccess.Interfaces;
 using ECTracker.DAL.Enums;
 using ECTracker.Services.Common.Config;
 using Microsoft.Data.Sqlite;
@@ -8,42 +9,45 @@ using static System.IO.Directory;
 
 namespace ECTracker.DAL
 {
-    public class DbRepository
+    public static class GlobalConfig
     {
         private const string ApplicationFolderName = "ECTracker";
         private const string SqLiteDatabaseName = "ECTracker.db";
-        private static readonly string DbFolderPath = FullFolderPath(ApplicationFolderName);
 
+        private static readonly string DbFolderPath = FullFolderPath(ApplicationFolderName);
+        private static string _dbFilePath = Path.Combine(DbFolderPath, Path.GetFileName(SqLiteDatabaseName) ?? throw new InvalidOperationException());
         private static SqliteConnection DbConnection { get; set; }
+
+        public static IDataConnection Connection { get; private set; }
 
         public static void InitializeConnections(DatabaseType db)
         {
+            SqLiteConnector sqlite = new SqLiteConnector();
+            NoSqlConnector noSql = new NoSqlConnector();
+            var json = new JsonConnector();
+
             switch (db)
             {
                 case DatabaseType.SqLite:
                     {
                         CreateAndOpenDb();
-                        //SQLiteConnector sqlite = new SQLiteConnector();
-                        //Connection = sqlite;
+                        Connection = sqlite;
                         break;
                     }
                 case DatabaseType.NoSql:
                     {
                         CreateAndOpenDb();
-                        //NoSqlConnector noSql = new NoSqlConnector();
-                        //Connection = noSql;
+                        Connection = noSql;
                         break;
                     }
                 case DatabaseType.Json:
                     {
-                        JsonConnector json = new JsonConnector();
-                        //Connection = json;
+                        Connection = json;
                         break;
                     }
                 default:
                     CreateAndOpenDb();
-                    //SQLiteConnector sqlite = new SQLiteConnector();
-                    //Connection = sqlite;
+                    Connection = sqlite;
                     break;
             }
         }
@@ -64,9 +68,8 @@ namespace ECTracker.DAL
             {
                 CreateDirectory(DbFolderPath);
             }
-
-            string dbFilePath = Path.Combine(DbFolderPath, Path.GetFileName(SqLiteDatabaseName) ?? throw new InvalidOperationException());
-            using SqliteConnection connection = DbConnection = new SqliteConnection($"Data Source={dbFilePath}");
+            _dbFilePath = Path.Combine(DbFolderPath, Path.GetFileName(SqLiteDatabaseName) ?? throw new InvalidOperationException());
+            using SqliteConnection connection = DbConnection = new SqliteConnection($"Data Source={_dbFilePath}");
             new SeedDatabase(DbConnection).Execute();
         }
     }
