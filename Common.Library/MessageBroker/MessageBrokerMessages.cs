@@ -1,6 +1,6 @@
 ﻿namespace Common.Library.MessageBroker
 {
-    public class MessageBrokerMessages
+    public static class MessageBrokerMessages
     {
         public const string DisplayStatusMessage = "DisplayStatusMessage";
 

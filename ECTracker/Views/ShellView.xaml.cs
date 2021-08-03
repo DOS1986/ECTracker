@@ -162,16 +162,16 @@ namespace ECTracker.Desktop.UI.Views
                     //    // Logging out, so close any open windows
                     //    CloseUserControl();
 
-                    //    // Reset the user object
-                    //    _viewModel.UserEntity = new User();
+                    //    //Reset the user object
+                    //    //_viewModel.UserEntity = new User();
 
                     //    // Make menu display Login
                     //    _viewModel.LoginMenuHeader = "Login";
                     //}
                     //else
                     //{
-                    //    // Display the login screen
-                    //    LoadUserControl("RomTracker.UserControls.LoginControl");
+                    // Display the login screen
+                    LoadUserControl("RomTracker.UserControls.LoginControl");
                     //}
                     break;
             }

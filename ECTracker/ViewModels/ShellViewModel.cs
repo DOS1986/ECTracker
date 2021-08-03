@@ -45,7 +45,7 @@ namespace ECTracker.Desktop.UI.ViewModels
                 _infoMessageTimer = new Timer(_infoMessageTimeout);
 
                 // Connect to an Elapsed event
-                _infoMessageTimer.Elapsed += _MessageTimer_Elapsed;
+                _infoMessageTimer.Elapsed += MessageTimer_Elapsed;
             }
 
             _infoMessageTimer.AutoReset = false;
@@ -53,7 +53,7 @@ namespace ECTracker.Desktop.UI.ViewModels
             IsInfoMessageVisible = true;
         }
 
-        private void _MessageTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void MessageTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             IsInfoMessageVisible = false;
         }

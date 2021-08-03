@@ -12,7 +12,7 @@ namespace ECTracker.DAL
             // Ensure we have a connection
             if (connection == null)
             {
-                throw new NullReferenceException("Please provide a connection");
+                throw new ArgumentNullException(nameof(connection), "Please provide a connection");
             }
 
             // Ensure that the connection state is Open
