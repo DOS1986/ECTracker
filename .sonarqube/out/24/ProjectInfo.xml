@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>ECTracker.DAL</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>b0294041-5a7d-4e8b-917b-3977e063cdf2</ProjectGuid>
+  <FullPath>C:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker.DAL\ECTracker.DAL.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="C:\code\c-sharp\src\github.com\DOS1986\ECTracker\.sonarqube\conf\24\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">C:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker.DAL\bin\Release\netcoreapp3.1\win-x64\ECTracker.DAL.dll.RoslynCA.json|C:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker.DAL\bin\Release\netcoreapp3.1\win-x64\ECTracker.DAL.dll.RoslynCA.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">C:\code\c-sharp\src\github.com\DOS1986\ECTracker\.sonarqube\out\24</Property>
+  </AnalysisSettings>
+  <Configuration>Release</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>netcoreapp3.1</TargetFramework>
+</ProjectInfo>

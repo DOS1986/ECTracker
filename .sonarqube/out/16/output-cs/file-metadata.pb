@@ -1,0 +1,13 @@
+V
+MC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\CommonBase.csutf-8o
+fC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\Configuration\ConfigurationSettings.csutf-8g
+^C:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\Exceptions\ExceptionManager.csutf-8g
+^C:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\MessageBroker\MessageBroker.csutf-8p
+gC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\MessageBroker\MessageBrokerEventArgs.csutf-8o
+fC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\MessageBroker\MessageBrokerMessages.csutf-8X
+OC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\StringHelper.csutf-8h
+_C:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\Validation\ValidationMessage.csutf-8q
+hC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\ViewModels\ViewModelAddEditDeleteBase.csutf-8d
+[C:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\ViewModels\ViewModelBase.csutf-8”
+ˆC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\obj\Release\netcoreapp3.1\.NETCoreApp,Version=v3.1.AssemblyAttributes.csutf-8ƒ
+xC:\code\c-sharp\src\github.com\DOS1986\ECTracker\Common.Library\obj\Release\netcoreapp3.1\Common.Library.AssemblyInfo.csutf-8

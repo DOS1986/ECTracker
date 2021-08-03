@@ -1,6 +1,13 @@
 name: Deploy ECTracker
 
-on: [push]
+on:
+  push:
+    tags:
+        - "ECTracker/v*"
+
+env:
+  PROJECT_PATH: ECTracker/ECTracler.csproj
+
 
 jobs:
   buid:

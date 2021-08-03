@@ -1,0 +1,15 @@
+O
+FC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\App.xaml.csutf-8S
+JC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\AssemblyInfo.csutf-8S
+JC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\Bootstrapper.csutf-8i
+`C:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\ViewModels\AnimatedSplashViewModel.csutf-8`
+WC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\ViewModels\ShellViewModel.csutf-8k
+bC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\ViewModels\SplashMessageChangedEvent.csutf-8d
+[C:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\Views\AnimatedSplashView.xaml.csutf-8[
+RC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\Views\ShellView.xaml.csutf-8Ö
+zC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\obj\Release\netcoreapp3.1\win-x64\Views\AnimatedSplashView.g.csutf-8|
+qC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\obj\Release\netcoreapp3.1\win-x64\Views\ShellView.g.csutf-8p
+eC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\obj\Release\netcoreapp3.1\win-x64\App.g.csutf-8à
+}C:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\obj\Release\netcoreapp3.1\win-x64\GeneratedInternalTypeHelper.g.csutf-8ó
+ãC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\obj\Release\netcoreapp3.1\win-x64\.NETCoreApp,Version=v3.1.AssemblyAttributes.csutf-8ç
+ÅC:\code\c-sharp\src\github.com\DOS1986\ECTracker\ECTracker\obj\Release\netcoreapp3.1\win-x64\ECTracker.Desktop.UI.AssemblyInfo.csutf-8
