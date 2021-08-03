@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<UseWPF>true</UseWPF>
 		<CodeAnalysisRuleSet>..\.sonarlint\dos1986_ectrackercsharp.ruleset</CodeAnalysisRuleSet>
 		<Platforms>AnyCPU;x64;x86</Platforms>
