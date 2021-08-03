@@ -3,7 +3,7 @@ name: Deploy ECTracker
 on: [push]
 
 env:
-  PROJECT_PATH: ECTracker/ECTracler.csproj
+  PROJECT_PATH: ECTracker/ECTracker.Desktop.UI.csproj
 
 
 jobs:
