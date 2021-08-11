@@ -1,6 +1,6 @@
-﻿namespace ECTracker.DAL.Models
+﻿namespace ECTracker.DataLayer.Models
 {
-    public class Attachment
+    public class Attachment : BaseModel
     {
 
     }

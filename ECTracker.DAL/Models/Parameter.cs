@@ -1,4 +1,4 @@
-﻿namespace ECTracker.DAL.Models
+﻿namespace ECTracker.DataLayer.Models
 {
     class Parameter
     {

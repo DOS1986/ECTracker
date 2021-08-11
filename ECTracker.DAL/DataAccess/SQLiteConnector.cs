@@ -1,33 +1,35 @@
 ﻿using Dapper;
-using ECTracker.DAL.DataAccess.Interfaces;
-using ECTracker.DAL.Models;
-using System;
+using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
-namespace ECTracker.DAL.DataAccess
+namespace ECTracker.DataLayer.DataAccess
 {
-    public class SqLiteConnector : IDataConnection
+    public class SqLiteConnector : DbRepository
     {
-        public readonly IDbConnection Cnn = GlobalConfig.GetConnectionString();
+        private readonly SqliteConnection _cnn = GetConnection();
 
-        public List<Category> LoadCategories()
+        public List<T> GetAll<T>(string tableName)
         {
-            try
-            {
-                var output = Cnn.Query<Category>("select Name from Category", new DynamicParameters());
-                return output.ToList();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            var output = _cnn.Query<T>($"SELECT * FROM {tableName}", new DynamicParameters());
+            return output.ToList();
         }
 
-        public Category GetSingle_Category(int categoryId)
+        public T GetOneById<T>(int id, string tableName)
         {
-            Category result = Cnn.Query<Category>(@"SELECT Id, Name, Description, DateCreated FROM Category WHERE Id = @categoryId", new { categoryId }).FirstOrDefault();
+            var result = _cnn.Query<T>($"SELECT * FROM {tableName} WHERE Id = $id", new { id }).FirstOrDefault();
+            return result;
+        }
+
+        public T GetOne<T>(string fieldName, string tableName, string value)
+        {
+            _cnn.Open();
+
+            var param = new DynamicParameters();
+            param.Add($"@{fieldName}", value);
+
+            var result = _cnn.Query<T>($"SELECT * FROM {tableName} WHERE {fieldName} = @{fieldName}", param).FirstOrDefault();
+            _cnn.Close();
             return result;
         }
 

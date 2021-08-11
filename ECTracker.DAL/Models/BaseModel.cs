@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace ECTracker.DAL.Models
+namespace ECTracker.DataLayer.Models
 {
     public class BaseModel
     {

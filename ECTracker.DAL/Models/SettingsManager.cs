@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ECTracker.DAL.Models
+namespace ECTracker.DataLayer.Models
 {
     public abstract class SettingsManager<T> where T : SettingsManager<T>, new()
     {

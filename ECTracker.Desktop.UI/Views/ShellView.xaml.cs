@@ -1,5 +1,6 @@
 ﻿using Common.Library.MessageBroker;
-using ECTracker.Desktop.UI.ViewModels;
+using ECTracker.DataLayer.Models;
+using ECTracker.Wpf.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -8,24 +9,25 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace ECTracker.Desktop.UI.Views
+namespace ECTracker.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml
     /// </summary>
     public partial class ShellView : Window
     {
+        #region Private Variables
         private readonly ShellViewModel _viewModel = null;
         // Hold main window's original status message
         private readonly string _originalMessage;
+        #endregion
 
-
+        #region Constructor
         public ShellView()
         {
             InitializeComponent();
             Title = $"ECTracker {GetVersionNumber()}";
-            _viewModel = (ShellViewModel)
-                this.Resources["ViewModel"];
+            _viewModel = (ShellViewModel)Resources["ViewModel"];
 
             // Get the original status message
             _originalMessage = _viewModel.StatusMessage;
@@ -33,6 +35,7 @@ namespace ECTracker.Desktop.UI.Views
             // Initialize the Message Broker Events
             MessageBroker.Instance.MessageReceived += Instance_MessageReceived;
         }
+        #endregion
 
         public string GetVersionNumber()
         {
@@ -42,38 +45,61 @@ namespace ECTracker.Desktop.UI.Views
             return version;
         }
 
-        public async Task LoadApplication()
+        #region Window_Loaded Event
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel.InfoMessage = "Loading State Codes...";
-            await Dispatcher.BeginInvoke(new Action(() =>
-            {
-                _viewModel.LoadStateCodes();
-            }), DispatcherPriority.Background);
+            // Call method to load resources application
+            await LoadApplication();
 
-            _viewModel.InfoMessage = "Loading Country Codes...";
-            await Dispatcher.BeginInvoke(new Action(() =>
-            {
-                _viewModel.LoadCountryCodes();
-            }), DispatcherPriority.Background);
-
-            _viewModel.InfoMessage = "Loading Employee Types...";
-            await Dispatcher.BeginInvoke(new Action(() =>
-            {
-                _viewModel.LoadEmployeeTypes();
-            }), DispatcherPriority.Background);
+            // Turn off informational message area
+            _viewModel.ClearInfoMessages();
         }
+        #endregion
 
-        public void DisplayUserControl(UserControl uc)
+        #region Instance_MessageReceived Event
+        private void Instance_MessageReceived(object sender, MessageBrokerEventArgs e)
         {
-            // Add new user control to content area
-            ContentArea.Children.Add(uc);
-        }
+            switch (e.MessageName)
+            {
+                case MessageBrokerMessages.DisplayTimeoutInfoMessageTitle:
+                    _viewModel.InfoMessageTitle = e.MessagePayload.ToString();
+                    _viewModel.CreateInfoMessageTimer();
+                    break;
 
+                case MessageBrokerMessages.DisplayTimeoutInfoMessage:
+                    _viewModel.InfoMessage = e.MessagePayload.ToString();
+                    _viewModel.CreateInfoMessageTimer();
+                    break;
+
+                case MessageBrokerMessages.DisplayStatusMessage:
+                    // Set new status message
+                    _viewModel.StatusMessage = e.MessagePayload.ToString();
+                    break;
+
+                case MessageBrokerMessages.LoginSuccess:
+                    _viewModel.UserEntity = (User)e.MessagePayload;
+                    _viewModel.LoginMenuHeader = "Logout " + _viewModel.UserEntity.UserName;
+                    break;
+
+                case MessageBrokerMessages.Logout:
+                    _viewModel.UserEntity.IsLoggedIn = false;
+                    _viewModel.LoginMenuHeader = "Login";
+                    break;
+
+                case MessageBrokerMessages.CloseUserControl:
+                    CloseUserControl();
+                    break;
+            }
+        }
+        #endregion
+
+        #region MenuItem_Click Event
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             var mnu = (MenuItem)sender;
 
-            // The Tag property contains a command or the name of a user control to load
+            // The Tag property contains a command
+            // or the name of a user control to load
             if (mnu.Tag == null)
             {
                 return;
@@ -91,16 +117,92 @@ namespace ECTracker.Desktop.UI.Views
                 ProcessMenuCommands(cmd);
             }
         }
+        #endregion
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        #region LoadUserControl Method
+        private void LoadUserControl(string controlName)
         {
-            // Call method to load resources application
-            await LoadApplication();
+            Type ucType = null;
+            UserControl uc = null;
 
-            // Turn off informational message area
-            _viewModel.ClearInfoMessages();
+            if (!ShouldLoadUserControl(controlName))
+            {
+                return;
+            }
+            // Create a Type from controlName parameter
+            ucType = Type.GetType(controlName);
+            if (ucType == null)
+            {
+                MessageBox.Show("The Control: " + controlName
+                                                + " does not exist.");
+            }
+            else
+            {
+                // Close current user control in content area
+                // NOTE: Optionally add current user control to a list
+                //       so you can restore it when you close the newly added one
+                CloseUserControl();
+
+                // Create an instance of this control
+                uc = (UserControl)Activator.CreateInstance(ucType);
+                if (uc != null)
+                {
+                    // Display control in content area
+                    DisplayUserControl(uc);
+                }
+            }
         }
+        #endregion
 
+        #region DisplayUserControl Method
+        public void DisplayUserControl(UserControl uc)
+        {
+            // Add new user control to content area
+            ContentArea.Children.Add(uc);
+        }
+        #endregion
+
+        #region ProcessMenuCommands Method
+        private void ProcessMenuCommands(string command)
+        {
+            switch (command.ToLower())
+            {
+                case "exit":
+                    Close();
+                    break;
+
+                case "login":
+                    if (_viewModel.UserEntity.IsLoggedIn)
+                    {
+                        // Logging out, so close any open windows
+                        CloseUserControl();
+                        // Reset the user object
+                        _viewModel.UserEntity = new User();
+                        // Make menu display Login
+                        _viewModel.LoginMenuHeader = "Login";
+                    }
+                    else
+                    {
+                        //Display the login screen
+                        LoadUserControl("ECTracker.Wpf.Views.LoginControl");
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        #endregion
+
+        #region ShouldLoadUserControl Method
+        private bool ShouldLoadUserControl(string controlName)
+        {
+            // Make sure you don't reload a control already loaded.
+            return ContentArea.Children.Count <= 0 || ((UserControl)ContentArea.Children[0]).GetType().FullName != controlName;
+        }
+        #endregion
+
+        #region CloseUserControl Method
         private void CloseUserControl()
         {
             // Remove current user control
@@ -109,102 +211,29 @@ namespace ECTracker.Desktop.UI.Views
             // Restore the original status message
             _viewModel.StatusMessage = _originalMessage;
         }
+        #endregion
 
-        private void LoadUserControl(string controlName)
+        #region LoadApplication Method
+        public async Task LoadApplication()
         {
-
-            // Create a Type from controlName parameter
-            var ucType = Type.GetType(controlName);
-            if (!ShouldLoadUserControl(controlName)) return;
-            if (ucType == null)
+            _viewModel.InfoMessage = "Creating Database...";
+            await Dispatcher.BeginInvoke(new Action(() =>
             {
-                MessageBox.Show("The Control: " + controlName + " does not exist.");
-            }
-            else
-            {
-                // Close current user control in content area
-                CloseUserControl();
+                _viewModel.LoadDatabase();
+            }), DispatcherPriority.Background);
 
-                // Create an instance of this control
-                var uc = (UserControl)Activator.CreateInstance(ucType);
-                if (uc != null)
-                {
-                    // Display control in content area
-                    DisplayUserControl(uc);
-                }
-            }
+            //_viewModel.InfoMessage = "Loading Country Codes...";
+            //await Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    _viewModel.LoadCountryCodes();
+            //}), DispatcherPriority.Background);
+
+            //_viewModel.InfoMessage = "Loading Employee Types...";
+            //await Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    _viewModel.LoadEmployeeTypes();
+            //}), DispatcherPriority.Background);
         }
-
-        private bool ShouldLoadUserControl(string controlName)
-        {
-            var ret = true;
-
-            // Don't reload a control already loaded.
-            if (ContentArea.Children.Count <= 0) return true;
-            if (((UserControl)ContentArea.Children[0]).GetType().FullName == controlName)
-            {
-                ret = false;
-            }
-
-            return ret;
-        }
-
-        private void ProcessMenuCommands(string command)
-        {
-            switch (command.ToLower())
-            {
-                case "exit":
-                    Close();
-                    break;
-                case "login":
-                    //if (_viewModel.UserEntity.IsLoggedIn)
-                    //{
-                    //    // Logging out, so close any open windows
-                    //    CloseUserControl();
-
-                    //    //Reset the user object
-                    //    //_viewModel.UserEntity = new User();
-
-                    //    // Make menu display Login
-                    //    _viewModel.LoginMenuHeader = "Login";
-                    //}
-                    //else
-                    //{
-                    // Display the login screen
-                    LoadUserControl("RomTracker.UserControls.LoginControl");
-                    //}
-                    break;
-            }
-        }
-
-        private void Instance_MessageReceived(object sender, MessageBrokerEventArgs e)
-        {
-            switch (e.MessageName)
-            {
-                case MessageBrokerMessages.LoginSuccess:
-                    //_viewModel.UserEntity = (User)e.MessagePayload;
-                    _viewModel.LoginMenuHeader = "Logout "; // + _viewModel.UserEntity.UserName;
-                    break;
-                case MessageBrokerMessages.Logout:
-                    //_viewModel.UserEntity.IsLoggedIn = false;
-                    _viewModel.LoginMenuHeader = "Login";
-                    break;
-                case MessageBrokerMessages.DisplayStatusMessage:
-                    // Set new status message
-                    _viewModel.StatusMessage = e.MessagePayload.ToString();
-                    break;
-                case MessageBrokerMessages.CloseUserControl:
-                    CloseUserControl();
-                    break;
-                case MessageBrokerMessages.DisplayTimeoutInfoMessageTitle:
-                    _viewModel.InfoMessageTitle = e.MessagePayload.ToString();
-                    _viewModel.CreateInfoMessageTimer();
-                    break;
-                case MessageBrokerMessages.DisplayTimeoutInfoMessage:
-                    _viewModel.InfoMessage = e.MessagePayload.ToString();
-                    _viewModel.CreateInfoMessageTimer();
-                    break;
-            }
-        }
+        #endregion
     }
 }

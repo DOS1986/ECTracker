@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 
-namespace ECTracker.DAL.Enums
+namespace ECTracker.DataLayer.Enums
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum DatabaseType

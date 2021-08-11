@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ECTracker.Platform.DataContract.Settings
+namespace ECTracker.DataLayer.Models
 {
     public class ApplicationSettings
     {

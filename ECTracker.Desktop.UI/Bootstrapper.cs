@@ -1,12 +1,13 @@
 ﻿using Caliburn.Micro;
-using ECTracker.DAL;
-using ECTracker.Desktop.UI.ViewModels;
+using ECTracker.DataLayer;
+using ECTracker.DataLayer.DataAccess;
+using ECTracker.Wpf.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace ECTracker.Desktop.UI
+namespace ECTracker.Wpf
 {
     public class Bootstrapper : BootstrapperBase
     {
@@ -21,10 +22,10 @@ namespace ECTracker.Desktop.UI
         {
             _container.Instance(_container);
 
-            _container
-                .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()
-                .Singleton<DbRepository>();
+            _container.Singleton<IWindowManager, WindowManager>();
+            _container.Singleton<IEventAggregator, EventAggregator>();
+            _container.PerRequest<IDbRepository, DbRepository>();
+            _container.Singleton<SqLiteConnector>();
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)
@@ -36,6 +37,7 @@ namespace ECTracker.Desktop.UI
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+
             DisplayRootViewFor<ShellViewModel>();
         }
 

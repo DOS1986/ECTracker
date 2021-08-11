@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <CodeAnalysisRuleSet>..\.sonarlint\dos1986_ectrackercsharp.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>ECTracker.DataLayer</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,9 +14,8 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.114.4" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ECTracker.DAL.Models
+namespace ECTracker.DataLayer.Models
 {
     public class Category : BaseModel
     {

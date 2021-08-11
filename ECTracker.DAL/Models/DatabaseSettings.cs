@@ -1,7 +1,7 @@
-﻿using ECTracker.DAL.Enums;
+﻿using ECTracker.DataLayer.Enums;
 using Newtonsoft.Json;
 
-namespace ECTracker.DAL.Models
+namespace ECTracker.DataLayer.Models
 {
     public class DatabaseSettings
     {

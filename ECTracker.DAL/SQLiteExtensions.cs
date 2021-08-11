@@ -3,26 +3,34 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Data;
 
-namespace ECTracker.DAL
+namespace ECTracker.DataLayer
 {
     public static class SqLiteExtensions
     {
         public static void ExecuteNonQuery(this SqliteConnection connection, string commandText, object param = null)
         {
-            // Ensure we have a connection
-            if (connection == null)
+            try
             {
-                throw new ArgumentNullException(nameof(connection), "Please provide a connection");
-            }
+                // Ensure we have a connection
+                if (connection == null)
+                {
+                    throw new ArgumentNullException(nameof(connection), "Please provide a connection");
+                }
 
-            // Ensure that the connection state is Open
-            if (connection.State != ConnectionState.Open)
+                // Ensure that the connection state is Open
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
+
+                // Use Dapper to execute the given query
+                connection.Execute(commandText, param);
+            }
+            catch (Exception e)
             {
-                connection.Open();
+                Console.WriteLine(e.Message);
+                throw;
             }
-
-            // Use Dapper to execute the given query
-            connection.Execute(commandText, param);
         }
     }
 }

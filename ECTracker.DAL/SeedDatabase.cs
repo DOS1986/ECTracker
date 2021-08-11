@@ -1,7 +1,6 @@
-﻿using ECTracker.DAL;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 
-namespace ECTracker.Services.Common.Config
+namespace ECTracker.DataLayer
 {
     internal class SeedDatabase
     {
@@ -14,35 +13,76 @@ namespace ECTracker.Services.Common.Config
 
         public void Execute()
         {
-            CreateCategories();
-            CreateFootPrintCategories();
-            CreateFootPrints();
-            CreateDistributors();
-            CreateManufacturers();
-            CreateAttachments();
-            CreateSiPrefixes();
-            CreateUnits();
-            CreateUnitSiPrefixes();
-            CreateMeasurementUnits();
-            CreateStockHistory();
-            CreateStorageLocationCategories();
-            CreateStorageLocations();
-            CreateParameters();
-            CreateParts();
-            CreatePartParameters();
-            CreateProjects();
-            CreateProjectParts();
-            CreateProjectAttachments();
-            CreatePartDistributors();
-            CreatePartManufacturers();
+            new CreateUser(_dbConnection).SeedUser(_dbConnection);
+            //new CreateCategories(_dbConnection);
+            //CreateFootPrintCategories();
+            //CreateFootPrints();
+            //CreateDistributors();
+            //CreateManufacturers();
+            //CreateAttachments();
+            //CreateSiPrefixes();
+            //CreateUnits();
+            //CreateUnitSiPrefixes();
+            //CreateMeasurementUnits();
+            //CreateStockHistory();
+            //CreateStorageLocationCategories();
+            //CreateStorageLocations();
+            //CreateParameters();
+            //CreateParts();
+            //CreatePartParameters();
+            //CreateProjects();
+            //CreateProjectParts();
+            //CreateProjectAttachments();
+            //CreatePartDistributors();
+            //CreatePartManufacturers();
         }
 
         // Table Creation - Done
         // Insert Data - InProgress
-        public void CreateCategories()
+        public class CreateUser
         {
-            // Create a Category self-referencing table
-            _dbConnection.ExecuteNonQuery(@"
+            public CreateUser(SqliteConnection dbConnection)
+            {
+                // Create a User table
+                dbConnection.ExecuteNonQuery(@"
+                CREATE TABLE IF NOT EXISTS [User] (
+                    [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    [FirstName] NVARCHAR(64) NOT NULL,
+                    [LastName] NVARCHAR(64) NOT NULL,
+                    [Password] NVARCHAR(64) NOT NULL,
+                    [EmailAddress] NVARCHAR(64) NOT NULL,
+                    [UserName] NVARCHAR(64) NOT NULL,
+                    [DateCreated] TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    [DateModified] TIMESTAMP
+                )");
+            }
+
+            public void SeedUser(SqliteConnection dbConnection)
+            {
+                dbConnection.ExecuteNonQuery(@"
+                INSERT INTO User (
+                    FirstName,
+                    LastName,
+                    Password,
+                    EmailAddress,
+                    UserName)
+                VALUES (
+                    'David',
+                    'Southwood',
+                    'Test123456',
+                    'dos1986@gmail.com',
+                    'Techie1986');");
+            }
+        }
+
+        // Table Creation - Done
+        // Insert Data - InProgress
+        public class CreateCategories
+        {
+            public CreateCategories(SqliteConnection dbConnection)
+            {
+                // Create a Category self-referencing table
+                dbConnection.ExecuteNonQuery(@"
                 CREATE TABLE IF NOT EXISTS [Category] (
                     [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                     [ParentId] INTEGER,
@@ -52,6 +92,12 @@ namespace ECTracker.Services.Common.Config
                     [DateModified] TIMESTAMP,
                     FOREIGN KEY(ParentId) REFERENCES Category(Id)
                 )");
+            }
+
+            public void SeedCategories()
+            {
+
+            }
         }
 
         // Table Creation - Done

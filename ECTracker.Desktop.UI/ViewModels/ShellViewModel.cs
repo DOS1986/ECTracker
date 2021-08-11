@@ -1,11 +1,14 @@
-﻿using Common.Library.ViewModels;
+﻿using ECTracker.Common.ViewModels;
+using ECTracker.DataLayer;
+using ECTracker.DataLayer.Models;
 using System.Timers;
 
-namespace ECTracker.Desktop.UI.ViewModels
+namespace ECTracker.Wpf.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
         #region Private Variables
+
         private string _loginMenuHeader = "Login";
         private string _statusMessage;
         private bool _isInfoMessageVisible = true;
@@ -14,6 +17,8 @@ namespace ECTracker.Desktop.UI.ViewModels
         private const int Seconds = 1500;
         private Timer _infoMessageTimer = null;
         private int _infoMessageTimeout = 1500;
+        private User _userEntity = new User();
+        private DbRepository _dbRepository = new DbRepository();
         #endregion
 
         #region Public Properties
@@ -98,12 +103,39 @@ namespace ECTracker.Desktop.UI.ViewModels
                 RaisePropertyChanged("InfoMessageTitle");
             }
         }
+
+        public User UserEntity
+        {
+            get => _userEntity;
+            set
+            {
+                _userEntity = value;
+                RaisePropertyChanged("UserEntity");
+            }
+        }
+
+        public DbRepository DbRepository
+        {
+            get => _dbRepository;
+            set
+            {
+                _dbRepository = value;
+                RaisePropertyChanged("DbRepository");
+            }
+        }
         #endregion
 
         #region Public Methods
-        public void LoadStateCodes()
+
+        public ShellViewModel()
         {
-            // TODO: Write code to load state codes
+        }
+
+
+
+        public void LoadDatabase()
+        {
+            DbRepository.InitializeConnections();
             System.Threading.Thread.Sleep(Seconds);
         }
 

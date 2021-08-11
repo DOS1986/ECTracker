@@ -1,36 +1,34 @@
-﻿using ECTracker.Shared.Interfaces;
+﻿using ECTracker.Common.Interfaces;
+using ECTracker.Common.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 
-namespace ECTracker.Shared.Implementations
+namespace ECTracker.Common.Implementations
 {
-    public abstract class AppSettings : IAppSettings
+    public class AppSettings : IAppSettings
     {
         private const string FileName = "settings.json";
+        public Settings Items { get; private set; }
 
-        public void Load(object tar)
+        public AppSettings()
         {
-            Dictionary<string, object> items;
-            var type = tar.GetType();
+            Initialization();
+        }
 
+        public void Initialization()
+        {
             try
             {
                 var storage = IsolatedStorageFile.GetUserStoreForAssembly();
-                using IsolatedStorageFileStream stream = new IsolatedStorageFileStream(FileName, FileMode.Open, storage);
-                using StreamReader reader = new StreamReader(stream);
-                items = JsonConvert.DeserializeObject<Dictionary<string, object>>(reader.ReadToEnd());
-            }
-            catch (Exception) { return; }   // If fails - just don't use preferences.
+                using var stream = new IsolatedStorageFileStream(FileName, FileMode.OpenOrCreate, storage);
+                using var reader = new StreamReader(stream);
+                Items = JsonConvert.DeserializeObject<Settings>(reader.ReadToEnd()) ?? new Settings { IsFirstRun = true };
 
-            if (items == null) { return; }
-
-            foreach (var (key, value) in items)
-            {
-                type.GetProperty(key)?.SetValue(tar, value, null);
             }
+            catch (IsolatedStorageException e) { Console.WriteLine(e.Message); }
         }
 
         public void Save(object src, string tar)

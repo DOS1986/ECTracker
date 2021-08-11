@@ -1,4 +1,4 @@
-﻿namespace Common.Library.ViewModels
+﻿namespace ECTracker.Common.ViewModels
 {
     public class ViewModelAddEditDeleteBase : ViewModelBase
     {

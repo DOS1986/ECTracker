@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Common.Library
 {
-    public class StringHelper
+    public static class StringHelper
     {
         /// <summary>
         /// Call this method to generate a random string, for example, like a password
@@ -37,7 +37,7 @@ namespace Common.Library
         /// <returns>True if the email is valid, otherwise false.</returns>
         public static bool IsValidEmail(string email)
         {
-            return Regex.IsMatch(email, (@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"));
+            return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
         }
 
 

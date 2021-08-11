@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<UseWPF>true</UseWPF>
+		<CodeAnalysisRuleSet>..\.sonarlint\dos1986_ectrackercsharp.ruleset</CodeAnalysisRuleSet>
+		<Platforms>AnyCPU;x64;x86</Platforms>
+		<AssemblyName>ECTracker</AssemblyName>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<AssemblyVersion>0.0.1.0</AssemblyVersion>
+		<FileVersion>0.0.1.0</FileVersion>
+		<Authors>David Southwood (dsouthwood@binaryappsolutions.com)</Authors>
+		<Version>0.0.1</Version>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Copyright>Copyright ©  2021 Binary App Solutions</Copyright>
+		<Company>Binary App Solutions</Company>
+		<Description>Application to itemize all the electronic components that you own in one location</Description>
+		<RootNamespace>ECTracker.Wpf</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="..\.sonarlint\dos1986_ectracker\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Caliburn.Micro" Version="4.0.173" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.8" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.8" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Common.Library\Common.Library.csproj" />
+		<ProjectReference Include="..\ECTracker.DAL\ECTracker.DataLayer.csproj" />
+		<ProjectReference Include="..\ECTracker.Logging\ECTracker.Logging.csproj" />
+		<ProjectReference Include="..\ECTracker.Shared\ECTracker.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Models\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Views\LoginControl.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Views\LoginControl.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
+		</Page>
+	</ItemGroup>
+
+</Project>
